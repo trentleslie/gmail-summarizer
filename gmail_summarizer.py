@@ -112,7 +112,10 @@ def main():
             # Submit the email text to the email_summarizer function and print the output
             if 'text' in email_data:
                 summary = email_summarizer(email_data['text'])
-                #print(summary)
+                # Loop until the summary is fewer than 150 words
+                while len(summary.split()) >= 150:
+                    # You can adjust the parameters of the email_summarizer function if necessary
+                    summary = email_summarizer(summary)
             else:
                 summary = "Skipping email because no text content was found."
                 print(f"Skipping email with ID {email_data['id']} because no text content was found.")
