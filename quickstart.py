@@ -55,6 +55,7 @@ def email_summarizer(text):
             while retry_flag and retry_count < max_retries:
                 try:
                     # Call the ChatCompletion endpoint
+                    print("Calling OpenAI API...")
                     response = openai.ChatCompletion.create(
                             model = chatgpt_model,
                             messages=messages,
@@ -63,6 +64,7 @@ def email_summarizer(text):
                             presence_penalty = 0.5,
                             frequency_penalty = 0.4            
                         )
+                    print("Successfully called OpenAI API.")
                     retry_flag = False
                 except Exception:
                     print("Exception occurred in OpenAI API call. Retrying...")
