@@ -3,6 +3,9 @@ credentials.json
 api_key.py
 token.json
 
+# Cron log
+cron.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
