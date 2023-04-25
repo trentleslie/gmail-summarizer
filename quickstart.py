@@ -63,6 +63,7 @@ def email_summarizer(text):
                             presence_penalty = 0.5,
                             frequency_penalty = 0.4            
                         )
+                    retry_flag = False
                 except Exception:
                     print("Exception occurred in OpenAI API call. Retrying...")
                     retry_count += 1
@@ -223,7 +224,7 @@ def main():
         try:
             # Retrieve the email text
             email_data = get_email_data(service, message['id'])
-            print(f"Trying subject {email_data['subject']}.")
+            print(f"Trying subject '{email_data['subject']}'.")
 
             # Submit the email text to the email_summarizer function and print the output
             if 'text' in email_data:
