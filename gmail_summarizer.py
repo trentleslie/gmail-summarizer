@@ -113,7 +113,7 @@ def main():
             if 'text' in email_data:
                 summary = email_summarizer(email_data['text'])
                 # Loop until the summary is fewer than 150 words
-                while len(summary.split()) >= 150:
+                while len(summary.split()) >= 125:
                     # You can adjust the parameters of the email_summarizer function if necessary
                     summary = email_summarizer(summary)
             else:
