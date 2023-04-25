@@ -30,12 +30,12 @@ def email_summarizer(text):
             # Set your OpenAI API key
             openai.api_key = api_key
             
-            system_prompt = '''You are a language model that summarizes emails. Summarize in paragraph form or bullet points where appropriate.'''
+            system_prompt = '''You are a language model that summarizes emails in 3-5 bullet points.'''
                                 
-            user_input = f'''Summarize the following in less than 100 words: {email_text}'''
+            user_input = f'''Summarize the following in less than 100 words and only using 3-5 bullet points: {email_text}'''
                                         
             # Define a list of styles
-            style = "Conversational but terse and professional."
+            style = "Powerpoint slide with 3-5 bullet points"
 
             # Build messages payload
             messages = [
