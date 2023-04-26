@@ -102,45 +102,48 @@ def main():
 
     # Get total number of unread emails
     total_emails = len(unread_emails)
+    
+    if total_emails >= 5:
+        for idx, message in enumerate(unread_emails, start=1):
+            try:
+                # Retrieve the email text
+                email_data = get_email_data(service, message['id'])
+                print(f"Trying subject '{email_data['subject']}'.")
 
-    for idx, message in enumerate(unread_emails, start=1):
-        try:
-            # Retrieve the email text
-            email_data = get_email_data(service, message['id'])
-            print(f"Trying subject '{email_data['subject']}'.")
+                # Submit the email text to the email_summarizer function and print the output
+                if 'text' in email_data:
+                    summary = email_summarizer(email_data['text'])
+                    # Loop until the summary is fewer than 150 words
+                    while len(summary.split()) >= 125:
+                        # You can adjust the parameters of the email_summarizer function if necessary
+                        summary = email_summarizer(summary)
+                else:
+                    summary = "Skipping email because no text content was found."
+                    print(f"Skipping email with ID {email_data['id']} because no text content was found.")
 
-            # Submit the email text to the email_summarizer function and print the output
-            if 'text' in email_data:
-                summary = email_summarizer(email_data['text'])
-                # Loop until the summary is fewer than 150 words
-                while len(summary.split()) >= 125:
-                    # You can adjust the parameters of the email_summarizer function if necessary
-                    summary = email_summarizer(summary)
-            else:
-                summary = "Skipping email because no text content was found."
-                print(f"Skipping email with ID {email_data['id']} because no text content was found.")
+                # Add the output to an ongoing list or string called email_summaries
+                email_summaries += f"From: {email_data['from']}\n"
+                email_summaries += f"Subject: {email_data['subject']}\n"
+                email_summaries += f"Timestamp: {email_data['date']}\n"
+                email_summaries += f"Link: https://mail.google.com/mail/u/0/#inbox/{message['id']}\n"
+                email_summaries += f"Summary:\n{summary}\n\n\n"
 
-            # Add the output to an ongoing list or string called email_summaries
-            email_summaries += f"From: {email_data['from']}\n"
-            email_summaries += f"Subject: {email_data['subject']}\n"
-            email_summaries += f"Timestamp: {email_data['date']}\n"
-            email_summaries += f"Link: https://mail.google.com/mail/u/0/#inbox/{message['id']}\n"
-            email_summaries += f"Summary:\n{summary}\n\n\n"
+                # Mark the summarized emails as read and archived
+                if "Skipping email because no text content was found." not in summary:
+                    mark_as_read_and_archive(service, message['id'])
+                
+                print(f"({idx} of {total_emails}) emails processed.")
+            except:
+                traceback.print_exc()
+                continue
 
-            # Mark the summarized emails as read and archived
-            if "Skipping email because no text content was found." not in summary:
-                mark_as_read_and_archive(service, message['id'])
-            
-            print(f"({idx} of {total_emails}) emails processed.")
-        except:
-            traceback.print_exc()
-            continue
+        # Compose an email with the contents of email_summaries
+        composed_email = create_email("trentleslie@gmail.com", "trentleslie@gmail.com", "Email Summaries", email_summaries)
 
-    # Compose an email with the contents of email_summaries
-    composed_email = create_email("trentleslie@gmail.com", "trentleslie@gmail.com", "Email Summaries", email_summaries)
-
-    # Send the composed email to trentleslie@gmail.com
-    send_email(service, composed_email)
+        # Send the composed email to trentleslie@gmail.com
+        send_email(service, composed_email)
+    else:
+        print("Not enough emails to run.")
 
 if __name__ == '__main__':
     main()
