@@ -1,2 +1,2 @@
 # gmail-summarizer
-A tool that uses Gmail API and ChatGPT API to summarize emails
+Gmail Summarizer is an efficient email management tool that leverages the power of the Gmail API and OpenAI to automatically summarize and organize your unread emails. It focuses on keeping you updated on important messages, especially newsletters, without having to commit excessive time to read them in their entirety. The project retrieves unread emails, generates summaries, marks them as read and archived, and composes a digest email containing essential details and summaries. To learn more about this project and how to set it up, check out our comprehensive blog post at https://medium.com/@trentleslie/37cedf847b23.
