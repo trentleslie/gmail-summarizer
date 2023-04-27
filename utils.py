@@ -99,19 +99,18 @@ def get_email_data(service, message_id):
                 data = part['body']['data']
 
         if data is not None:
-            if data is not None:
-                text = base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8')
-                soup = BeautifulSoup(text, 'html.parser')
-                clean_text = soup.get_text()
-                clean_text = remove_hyperlinks(clean_text)
-                email_data['text'] = clean_text
-            else:
-                data = payload['body']['data']
-                text = base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8')
-                soup = BeautifulSoup(text, 'html.parser')
-                clean_text = soup.get_text()
-                clean_text = remove_hyperlinks(clean_text)
-                email_data['text'] = clean_text
+            text = base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8')
+            soup = BeautifulSoup(text, 'html.parser')
+            clean_text = soup.get_text()
+            clean_text = remove_hyperlinks(clean_text)
+            email_data['text'] = clean_text
+        else:
+            data = payload['body']['data']
+            text = base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8')
+            soup = BeautifulSoup(text, 'html.parser')
+            clean_text = soup.get_text()
+            clean_text = remove_hyperlinks(clean_text)
+            email_data['text'] = clean_text
     else:
         data = payload['body']['data']
         text = base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8')
