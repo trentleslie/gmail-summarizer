@@ -44,6 +44,13 @@ def mark_as_read_and_archive(service, message_id):
         id=message_id,
         body={'removeLabelIds': ['UNREAD', 'INBOX']}
     ).execute()
+    
+def mark_as_read(service, message_id):
+    service.users().messages().modify(
+        userId='me',
+        id=message_id,
+        body={'removeLabelIds': ['UNREAD']}
+    ).execute()
 
 def create_email(sender, to, subject, body):
     message = MIMEMultipart()

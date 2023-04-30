@@ -14,7 +14,7 @@ from api_key import api_key, chatgpt_model
 import traceback
 import time
 
-from utils import chunk_text, get_unread_emails, mark_as_read_and_archive, create_email, send_email, get_email_data
+from utils import chunk_text, get_unread_emails, mark_as_read_and_archive, mark_as_read, create_email, send_email, get_email_data
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.send', 'https://www.googleapis.com/auth/gmail.modify']
@@ -129,8 +129,10 @@ def main():
                 email_summaries += f"Summary:\n{summary}\n\n\n"
 
                 # Mark the summarized emails as read and archived
-                if "Skipping email because no text content was found." not in summary:
+                if "Skipping email because no text content was found." not in summary and "Email Summaries" not in email_data['subject']:
                     mark_as_read_and_archive(service, message['id'])
+                elif "Email Summaries" in email_data['subject']:
+                    mark_as_read(service, message['id'])
                 
                 print(f"({idx} of {total_emails}) emails processed.")
             except:
