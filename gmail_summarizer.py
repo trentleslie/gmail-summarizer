@@ -131,7 +131,7 @@ def main():
                 # Mark the summarized emails as read and archived
                 if "Skipping email because no text content was found." not in summary and "Email Summaries" not in email_data['subject']:
                     mark_as_read_and_archive(service, message['id'])
-                elif "Email Summaries" in email_data['subject']:
+                if "Email Summaries" in email_data['subject']:
                     mark_as_read(service, message['id'])
                 
                 print(f"({idx} of {total_emails}) emails processed.")
